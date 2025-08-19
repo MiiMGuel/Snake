@@ -1,1 +1,2 @@
-# 8-bit_snakePP
+# 8-bit Snake++
+8-bit snake game written in C++

@@ -15,6 +15,7 @@ target_sources(
     snake
     PRIVATE
     ${PROJECT_SOURCE_DIR}/src/snake.cpp
+    ${PROJECT_SOURCE_DIR}/src/input_box.cpp
 )
 
 target_include_directories(

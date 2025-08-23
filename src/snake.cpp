@@ -142,16 +142,16 @@ public:
                 
                 GuiEnable();
                 GuiLabel({10, 410, 280, 32}, "Key Bindings:");
-                if (status == 0) GuiLabel({10, 452, 280, 32}, "SPACE - start");
-                else if (status == 1) GuiLabel({10, 452, 280, 32}, "SPACE - pause");
-                else GuiLabel({10, 452, 280, 32}, "SPACE - play again");
+                if (status == 0) GuiLabel({10, 452, 280, 32}, "    SPACE - start");
+                else if (status == 1) GuiLabel({10, 452, 280, 32}, "    SPACE - pause");
+                else GuiLabel({10, 452, 280, 32}, "    SPACE - play again");
                 if (status != 0) GuiDisable();
-                GuiLabel({10, 484, 280, 32}, "R - reset");
+                GuiLabel({10, 494, 280, 32}, "    R - reset");
                 if (status != 1) GuiDisable(); else GuiEnable();
-                GuiLabel({10, 526, 280, 32}, "W - move up");
-                GuiLabel({10, 568, 280, 32}, "A - move left");
-                GuiLabel({10, 610, 280, 32}, "S - move down");
-                GuiLabel({10, 652, 280, 32}, "D - move right");
+                GuiLabel({10, 536, 280, 32}, "    W - move up");
+                GuiLabel({10, 578, 280, 32}, "    A - move left");
+                GuiLabel({10, 620, 280, 32}, "    S - move down");
+                GuiLabel({10, 662, 280, 32}, "    D - move right");
                 
                 GuiEnable();
                 GuiLabel({10, 368, 280, 32}, TextFormat("Score: %d", map.get_snake_length() - 3));

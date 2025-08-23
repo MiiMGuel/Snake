@@ -40,7 +40,9 @@ private:
 
     Map map = Map(15, 4.0);
     int32_t apple_count = 1;
+    int32_t apple_pcount = 1;
     int32_t wall_count = 0;
+    int32_t wall_pcount = 0;
 
     void apply_theme() {
         GuiLoadStyleDefault();
@@ -89,6 +91,9 @@ public:
 
     void run() override {
         int32_t text_width = 0;
+        bool on_apple = false;
+        bool on_wall = false;
+        bool on_tick = false;
         bool on_drop = false;
         const char* options = "amber;ashes;bluish;candy;cherry;cyber;dark;default;enefete;genesis;jungle;lavanda;rltech;sunny;terminal";
         while (!WindowShouldClose()) {
@@ -133,12 +138,20 @@ public:
                 GuiCheckBox({10, 52, 32, 32}, "Body Collision", &map.body_collision);
                 GuiCheckBox({10, 94, 32, 32}, "Border Collision", &map.border_collision);
                 
-                if (GuiSpinner({10, 146, 280, 32}, "", &apple_count, 1, 10, false)) map.set_apple(apple_count);
+                if (GuiSpinner({10, 146, 280, 32}, "", &apple_count, 1, 10, on_apple)) on_apple = !on_apple;
                 GuiLabel({10, 178, 280, 32}, "Apple Count");
-                if (GuiSpinner({10, 220, 280, 32}, "", &wall_count, 0, 10, false)) map.set_wall(wall_count);
+                if (GuiSpinner({10, 220, 280, 32}, "", &wall_count, 0, 10, on_wall)) on_wall = !on_wall;
                 GuiLabel({10, 252, 280, 32}, "Wall Count");
-                GuiSpinner({10, 294, 280, 32}, "", &map.tick_rate, 1, 20, false);
+                if (GuiSpinner({10, 294, 280, 32}, "", &map.tick_rate, 1, 20, on_tick)) { on_tick = !on_tick; }
                 GuiLabel({10, 326, 280, 32}, "Tick rate");
+
+                if (apple_pcount != apple_count) {
+                    apple_pcount = apple_count;
+                    map.set_apple(apple_count);
+                } if (wall_pcount != wall_count) {
+                    wall_pcount = wall_count;
+                    map.set_wall(wall_count);
+                }
                 
                 GuiEnable();
                 GuiLabel({10, 410, 280, 32}, "Key Bindings:");

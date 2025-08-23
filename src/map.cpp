@@ -12,6 +12,7 @@ Vector2 Map::rand_apple_pos() {
         vec.y = GetRandomValue(0, size - 1);
     } while (
         map[vec.x + (vec.y * size)] & HEAD || 
+        map[vec.x + (vec.y * size)] & BODY ||
         map[vec.x + (vec.y * size)] & WALL ||
         map[vec.x + (vec.y * size)] & APPLE
     );
@@ -40,7 +41,11 @@ int32_t Map::get_snake_length() { return snake.size(); }
 
 void Map::clear() { map.clear(); }
     
-void Map::resize(int32_t size) { this->size = size; map.resize(size * size, 0); }
+void Map::resize(int32_t size) { 
+    this->size = size; 
+    if (map.size()) map.clear();
+    map.resize(size * size, 0);
+}
 
 void Map::add_flag(uint8_t flag, int32_t x, int32_t y) {
     map[x + (y * size)] |= flag;

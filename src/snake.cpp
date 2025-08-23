@@ -37,6 +37,7 @@ private:
     bool playing = false;
 
     Map map = Map(15, 4.0);
+    int32_t size = 15;
     int32_t apple_count = 1;
     int32_t apple_pcount = 1;
     int32_t wall_count = 0;
@@ -63,6 +64,12 @@ private:
             break;
         } GuiSetStyle(DEFAULT, TEXT_SIZE, 32);
     }
+
+    void map_reset() {
+        map.set_snake(map.get_size() / 2, map.get_size() / 2);
+        map.set_apple(apple_count);
+        map.set_wall(wall_count);
+    }
 public:
     Snake() {
         SetConfigFlags(FLAG_VSYNC_HINT);
@@ -74,9 +81,7 @@ public:
 
         apply_theme();
         
-        map.set_snake(map.get_size() / 2, map.get_size() / 2);
-        map.set_apple(apple_count);
-        map.set_wall(wall_count);
+        map_reset();
         map.body_collision = true;
         map.border_collision = true;
     }
@@ -99,13 +104,23 @@ public:
 
             switch (status) {
             case 0: // paused
+                if (IsKeyPressed(KEY_M)) { 
+                    size += 5;
+                    if (size > 50) size = 50;
+                    map.resize(size);
+                    map_reset();
+                } else if (IsKeyPressed(KEY_N)) {
+                    size -= 5;
+                    if (size < 5) size = 5; 
+                    map.resize(size); 
+                    map_reset();
+                }
+
                 if (IsKeyPressed(KEY_SPACE)) {
                     playing = true;
                     status = 1;
                 } else if (IsKeyPressed(KEY_R)) {
-                    map.set_snake(map.get_size() / 2, map.get_size() / 2);
-                    map.set_apple(apple_count);
-                    map.set_wall(wall_count);
+                    map_reset();
                     playing = false;
                 } break;
             
@@ -119,9 +134,7 @@ public:
 
             case 2: // game over
                 if (IsKeyPressed(KEY_SPACE)) {
-                    map.set_snake(map.get_size() / 2, map.get_size() / 2);
-                    map.set_apple(apple_count);
-                    map.set_wall(wall_count);
+                    map_reset();
                     playing = false;
                     status = 0;
                 } break;
@@ -151,16 +164,17 @@ public:
                 
                 GuiEnable();
                 GuiLabel({10, 410, 280, 32}, "Key Bindings:");
-                if (status == 0) GuiLabel({10, 452, 280, 32}, "    SPACE - start");
-                else if (status == 1) GuiLabel({10, 452, 280, 32}, "    SPACE - pause");
-                else GuiLabel({10, 452, 280, 32}, "    SPACE - play again");
-                if (status != 0) GuiDisable();
-                GuiLabel({10, 494, 280, 32}, "    R - reset");
+                if (status == 0) GuiLabel({10, 452, 280, 32}, "SPACE - start");
+                else if (status == 1) GuiLabel({10, 452, 280, 32}, "SPACE - pause");
+                else GuiLabel({10, 452, 280, 32}, "SPACE - play again");
+                if (status != 0) GuiDisable(); else GuiEnable(); 
+                GuiLabel({10, 494, 280, 32}, "R - reset");
+                if (playing) GuiDisable(); else GuiEnable(); 
+                GuiLabel({10, 536, 280, 32}, "M - size up");
+                GuiLabel({10, 578, 280, 32}, "N - size down");
                 if (status != 1) GuiDisable(); else GuiEnable();
-                GuiLabel({10, 536, 280, 32}, "    W - move up");
-                GuiLabel({10, 578, 280, 32}, "    A - move left");
-                GuiLabel({10, 620, 280, 32}, "    S - move down");
-                GuiLabel({10, 662, 280, 32}, "    D - move right");
+                GuiLabel({10, 620, 280, 32}, "WASD - direction");
+                GuiLabel({10, 662, 280, 32}, "Arrows - direction");
                 
                 GuiEnable();
                 GuiLabel({10, 368, 280, 32}, TextFormat("Score: %d", map.get_snake_length() - 3));

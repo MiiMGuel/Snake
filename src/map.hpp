@@ -34,7 +34,7 @@ private:
 public:
     bool body_collision = true;
     bool border_collision = true;
-    double tick_rate = 4.0;
+    int32_t tick_rate = 4.0;
     bool snake_alive = true;
     
     Map(int32_t size, double tr);

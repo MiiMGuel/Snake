@@ -107,7 +107,7 @@ void Map::update(double dt) {
     }
 
     time += dt;
-    if (snake_alive) if (time >= 1.0 / tick_rate) {
+    if (snake_alive) if (time >= 1.0 / (double)tick_rate) {
         time = 0.0;
         next_input = true;
 

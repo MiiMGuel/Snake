@@ -92,8 +92,10 @@ public:
                 GuiLabel({10, 90, 180, 20}, "Apple Count");
                 if (GuiSpinner({10, 120, 180, 20}, "", &wall_count, 0, 10, false)) map.set_wall(wall_count);
                 GuiLabel({10, 140, 180, 20}, "Wall Count");
+                GuiSpinner({10, 170, 180, 20}, "", &map.tick_rate, 1, 10, false);
+                GuiLabel({10, 190, 180, 20}, "Tick rate");
                 GuiEnable();
-                GuiLabel({10, 170, 180, 20}, TextFormat("Score: %d", map.get_snake_length() - 3));
+                GuiLabel({10, 220, 180, 20}, TextFormat("Score: %d", map.get_snake_length() - 3));
             EndDrawing();
 
             if (sigma_dt >= 1.0) {

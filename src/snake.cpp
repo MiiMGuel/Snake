@@ -2,43 +2,29 @@
 
 #include "main.cpp"
 #include "raylib.h"
-#include "input_box.hpp"
+#include "map.hpp"
 
-enum CellId {
-    EMPTY = (uint8_t)0b00000000,
-    HEAD  = (uint8_t)0b00000001,
-    BODY  = (uint8_t)0b00000010,
-    APPLE = (uint8_t)0b00000100
-};
-
-class Map {
-private:
-    std::vector<uint8_t> map;
-    uint32_t size = 0;
-
-public:
-    Map(uint32_t size) : size(size) { map.resize(size, 0); }
-    ~Map() { }
-
-    void clear(void) { map.clear(); }
-    void resize(uint32_t size) { map.resize(size); }
-};
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
+#include "dark/style_dark.h"
 
 class Snake : public App {
 private:
     int32_t window_width = 800;
     int32_t window_height = 600;
 
-    // core - timing
     double current_time = 0.0;
     double previous_time = 0.0;
     double delta_time = 0.0;
     double sigma_dt = 0.0;
     uint32_t frame_count = 0;
     uint32_t frame_rate = 0;
+    uint8_t status = 0;
+    bool playing = false;
 
-    InputBox input_text = InputBox(TEXT, 12, {10, 110, 200, 40});
-    InputBox input_number = InputBox(NUMBER, 12, {10, 160, 200, 40});
+    Map map = Map(15, 4.0);
+    int32_t apple_count = 1;
+    int32_t wall_count = 0;
 
 public:
     Snake() {
@@ -47,29 +33,67 @@ public:
             window_width, 
             window_height, 
             "8-bit snake"
-        );
+        ); 
+
+        GuiLoadStyleDark();
+        GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
+        
+        map.set_snake(map.get_size() / 2, map.get_size() / 2);
+        map.set_apple(apple_count);
+        map.set_wall(wall_count);
+        map.body_collision = true;
+        map.border_collision = true;
     }
 
     ~Snake() { 
         CloseWindow();
     }
 
-    void run() override { 
-        char text[255];
+    void run() override {
+        int32_t text_width = 0;
         while (!WindowShouldClose()) {
             current_time = GetTime();
             delta_time = current_time - previous_time;
             sigma_dt += delta_time;
 
-            input_text.update();
-            input_number.update();
+            switch (status) {
+            case 0: // paused
+                if (IsKeyPressed(KEY_SPACE)) {
+                    playing = true;
+                    status = 1;
+                } break;
+            
+            case 1: // playing
+                if (IsKeyPressed(KEY_SPACE)) status = 0;
+
+                map.update(delta_time);
+                if (map.snake_alive == false) {
+                    status = 2;
+                } break;
+
+            case 2: // game over
+                if (IsKeyPressed(KEY_SPACE)) {
+                    map.set_snake(map.get_size() / 2, map.get_size() / 2);
+                    map.set_apple(apple_count);
+                    map.set_wall(wall_count);
+                    playing = false;
+                    status = 0;
+                } break;
+            }
 
             BeginDrawing();
-                ClearBackground(WHITE);
-                input_text.draw();
-                input_number.draw();
-                DrawText(TextFormat("frame rate: %d/s", frame_rate), 10, 10, 40, BLACK);
-                DrawText(TextFormat("delta time: %0.3fs", delta_time), 10, 60, 40, BLACK);
+                ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
+                map.draw({200, 0, 600, 600});
+                
+                if (playing) GuiDisable();
+                GuiCheckBox({10, 10, 20, 20}, "Body Collision", &map.body_collision);
+                GuiCheckBox({10, 40, 20, 20}, "Border Collision", &map.border_collision);
+                if (GuiSpinner({10, 70, 180, 20}, "", &apple_count, 1, 10, false)) map.set_apple(apple_count);
+                GuiLabel({10, 90, 180, 20}, "Apple Count");
+                if (GuiSpinner({10, 120, 180, 20}, "", &wall_count, 0, 10, false)) map.set_wall(wall_count);
+                GuiLabel({10, 140, 180, 20}, "Wall Count");
+                GuiEnable();
+                GuiLabel({10, 170, 180, 20}, TextFormat("Score: %d", map.get_snake_length() - 3));
             EndDrawing();
 
             if (sigma_dt >= 1.0) {

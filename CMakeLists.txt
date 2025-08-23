@@ -15,13 +15,15 @@ target_sources(
     snake
     PRIVATE
     ${PROJECT_SOURCE_DIR}/src/snake.cpp
-    ${PROJECT_SOURCE_DIR}/src/input_box.cpp
+    ${PROJECT_SOURCE_DIR}/src/map.cpp
 )
 
 target_include_directories(
     snake
     PRIVATE 
     ${PROJECT_SOURCE_DIR}/src 
+    ${PROJECT_SOURCE_DIR}/lib/raygui/src
+    ${PROJECT_SOURCE_DIR}/lib/raygui/styles
 )
 
 target_link_libraries(

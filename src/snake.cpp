@@ -53,8 +53,8 @@ private:
         case 5: GuiLoadStyleCyber(); break;
         case 6: GuiLoadStyleGenesis(); break;
         case 7: GuiLoadStyleEnefete(); break;
-        case 8: GuiLoadStyleDefault(); break;
-        case 9: GuiLoadStyleLavanda(); break;
+        case 8: GuiLoadStyleLavanda(); break;
+        case 9: GuiLoadStyleDefault(); break;
         case 10: GuiLoadStyleRLTech(); break;
         case 11: GuiLoadStyleSunny(); break;
         case 12: GuiLoadStyleTerminal(); break;
@@ -91,7 +91,7 @@ public:
         bool on_wall = false;
         bool on_tick = false;
         bool on_drop = false;
-        const char* options = "amber;ashes;bluish;candy;cherry;cyber;dark;enefete;light;lavanda;rltech;sunny;terminal";
+        const char* options = "amber;ashes;bluish;candy;cherry;cyber;dark;enefete;lavanda;light;rltech;sunny;terminal";
         while (!WindowShouldClose()) {
             current_time = GetTime();
             delta_time = current_time - previous_time;

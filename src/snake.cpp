@@ -129,7 +129,7 @@ public:
             BeginDrawing();
                 ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
                 
-                if (playing) GuiDisable(); else GuiEnable();
+                if (playing || on_drop) GuiDisable(); else GuiEnable();
                 GuiCheckBox({10, 52, 32, 32}, "Body Collision", &map.body_collision);
                 GuiCheckBox({10, 94, 32, 32}, "Border Collision", &map.border_collision);
                 

@@ -12,10 +12,8 @@
 #include "candy/style_candy.h"
 #include "cherry/style_cherry.h"
 #include "cyber/style_cyber.h"
-#include "dark/style_dark.h"
 #include "enefete/style_enefete.h"
 #include "genesis/style_genesis.h"
-#include "jungle/style_jungle.h"
 #include "lavanda/style_lavanda.h"
 #include "rltech/style_rltech.h"
 #include "sunny/style_sunny.h"
@@ -27,7 +25,7 @@ class Snake : public App {
 private:
     int32_t window_width = 1000;
     int32_t window_height = 700;
-    int32_t theme = 9;
+    int32_t theme = 8;
 
     double current_time = 0.0;
     double previous_time = 0.0;
@@ -53,15 +51,13 @@ private:
         case 3: GuiLoadStyleCandy(); break;
         case 4: GuiLoadStyleCherry(); break;
         case 5: GuiLoadStyleCyber(); break;
-        case 6: GuiLoadStyleDark(); break;
-        case 7: GuiLoadStyleDefault(); break;
-        case 8: GuiLoadStyleEnefete(); break;
-        case 9: GuiLoadStyleGenesis(); break;
-        case 10: GuiLoadStyleJungle(); break;
-        case 11: GuiLoadStyleLavanda(); break;
-        case 12: GuiLoadStyleRLTech(); break;
-        case 13: GuiLoadStyleSunny(); break;
-        case 14: GuiLoadStyleTerminal(); break;
+        case 6: GuiLoadStyleDefault(); break;
+        case 7: GuiLoadStyleEnefete(); break;
+        case 8: GuiLoadStyleGenesis(); break;
+        case 9: GuiLoadStyleLavanda(); break;
+        case 10: GuiLoadStyleRLTech(); break;
+        case 11: GuiLoadStyleSunny(); break;
+        case 12: GuiLoadStyleTerminal(); break;
         
         default:
             break;
@@ -95,7 +91,7 @@ public:
         bool on_wall = false;
         bool on_tick = false;
         bool on_drop = false;
-        const char* options = "amber;ashes;bluish;candy;cherry;cyber;dark;default;enefete;genesis;jungle;lavanda;rltech;sunny;terminal";
+        const char* options = "amber;ashes;bluish;candy;cherry;cyber;light;enefete;dark;lavanda;rltech;sunny;terminal";
         while (!WindowShouldClose()) {
             current_time = GetTime();
             delta_time = current_time - previous_time;

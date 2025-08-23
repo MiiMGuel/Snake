@@ -27,7 +27,7 @@ class Snake : public App {
 private:
     int32_t window_width = 1000;
     int32_t window_height = 700;
-    int32_t theme = 0;
+    int32_t theme = 9;
 
     double current_time = 0.0;
     double previous_time = 0.0;

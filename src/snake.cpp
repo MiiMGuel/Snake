@@ -6,12 +6,28 @@
 
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
+#include "amber/style_amber.h"
+#include "ashes/style_ashes.h"
+#include "bluish/style_bluish.h"
+#include "candy/style_candy.h"
+#include "cherry/style_cherry.h"
+#include "cyber/style_cyber.h"
 #include "dark/style_dark.h"
+#include "enefete/style_enefete.h"
+#include "genesis/style_genesis.h"
+#include "jungle/style_jungle.h"
+#include "lavanda/style_lavanda.h"
+#include "rltech/style_rltech.h"
+#include "sunny/style_sunny.h"
+#include "terminal/style_terminal.h"
+
+#define THEMES_COUNT 15 // including default
 
 class Snake : public App {
 private:
-    int32_t window_width = 800;
-    int32_t window_height = 600;
+    int32_t window_width = 1000;
+    int32_t window_height = 700;
+    int32_t theme = 6;
 
     double current_time = 0.0;
     double previous_time = 0.0;
@@ -26,6 +42,29 @@ private:
     int32_t apple_count = 1;
     int32_t wall_count = 0;
 
+    void apply_theme() {
+        GuiLoadStyleDefault();
+        switch (theme) {
+        case 0: GuiLoadStyleAmber(); break;
+        case 1: GuiLoadStyleAshes(); break;
+        case 2: GuiLoadStyleBluish(); break;
+        case 3: GuiLoadStyleCandy(); break;
+        case 4: GuiLoadStyleCherry(); break;
+        case 5: GuiLoadStyleCyber(); break;
+        case 6: GuiLoadStyleDark(); break;
+        case 7: GuiLoadStyleDefault(); break;
+        case 8: GuiLoadStyleEnefete(); break;
+        case 9: GuiLoadStyleGenesis(); break;
+        case 10: GuiLoadStyleJungle(); break;
+        case 11: GuiLoadStyleLavanda(); break;
+        case 12: GuiLoadStyleRLTech(); break;
+        case 13: GuiLoadStyleSunny(); break;
+        case 14: GuiLoadStyleTerminal(); break;
+        
+        default:
+            break;
+        } GuiSetStyle(DEFAULT, TEXT_SIZE, 32);
+    }
 public:
     Snake() {
         SetConfigFlags(FLAG_VSYNC_HINT);
@@ -35,8 +74,7 @@ public:
             "8-bit snake"
         ); 
 
-        GuiLoadStyleDark();
-        GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
+        apply_theme();
         
         map.set_snake(map.get_size() / 2, map.get_size() / 2);
         map.set_apple(apple_count);
@@ -51,6 +89,8 @@ public:
 
     void run() override {
         int32_t text_width = 0;
+        bool on_drop = false;
+        const char* options = "amber;ashes;bluish;candy;cherry;cyber;dark;default;enefete;genesis;jungle;lavanda;rltech;sunny;terminal";
         while (!WindowShouldClose()) {
             current_time = GetTime();
             delta_time = current_time - previous_time;
@@ -88,34 +128,37 @@ public:
 
             BeginDrawing();
                 ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
-                map.draw({200, 0, 600, 600});
                 
                 if (playing) GuiDisable(); else GuiEnable();
-                GuiCheckBox({10, 10, 20, 20}, "Body Collision", &map.body_collision);
-                GuiCheckBox({10, 40, 20, 20}, "Border Collision", &map.border_collision);
+                GuiCheckBox({10, 52, 32, 32}, "Body Collision", &map.body_collision);
+                GuiCheckBox({10, 94, 32, 32}, "Border Collision", &map.border_collision);
                 
-                if (GuiSpinner({10, 70, 180, 20}, "", &apple_count, 1, 10, false)) map.set_apple(apple_count);
-                GuiLabel({10, 90, 180, 20}, "Apple Count");
-                if (GuiSpinner({10, 120, 180, 20}, "", &wall_count, 0, 10, false)) map.set_wall(wall_count);
-                GuiLabel({10, 140, 180, 20}, "Wall Count");
-                GuiSpinner({10, 170, 180, 20}, "", &map.tick_rate, 1, 20, false);
-                GuiLabel({10, 190, 180, 20}, "Tick rate");
+                if (GuiSpinner({10, 146, 280, 32}, "", &apple_count, 1, 10, false)) map.set_apple(apple_count);
+                GuiLabel({10, 178, 280, 32}, "Apple Count");
+                if (GuiSpinner({10, 220, 280, 32}, "", &wall_count, 0, 10, false)) map.set_wall(wall_count);
+                GuiLabel({10, 252, 280, 32}, "Wall Count");
+                GuiSpinner({10, 294, 280, 32}, "", &map.tick_rate, 1, 20, false);
+                GuiLabel({10, 326, 280, 32}, "Tick rate");
                 
                 GuiEnable();
-                GuiLabel({10, 250, 180, 20}, "Key Bindings:");
-                if (status == 0) GuiLabel({10, 280, 180, 20}, "SPACE - start");
-                else if (status == 1) GuiLabel({10, 280, 180, 20}, "SPACE - pause");
-                else GuiLabel({10, 280, 180, 20}, "SPACE - play again");
+                GuiLabel({10, 410, 280, 32}, "Key Bindings:");
+                if (status == 0) GuiLabel({10, 452, 280, 32}, "SPACE - start");
+                else if (status == 1) GuiLabel({10, 452, 280, 32}, "SPACE - pause");
+                else GuiLabel({10, 452, 280, 32}, "SPACE - play again");
                 if (status != 0) GuiDisable();
-                GuiLabel({10, 310, 180, 20}, "R - reset");
+                GuiLabel({10, 484, 280, 32}, "R - reset");
                 if (status != 1) GuiDisable(); else GuiEnable();
-                GuiLabel({10, 340, 180, 20}, "W - move up");
-                GuiLabel({10, 370, 180, 20}, "A - move left");
-                GuiLabel({10, 400, 180, 20}, "S - move down");
-                GuiLabel({10, 430, 180, 20}, "D - move right");
+                GuiLabel({10, 526, 280, 32}, "W - move up");
+                GuiLabel({10, 568, 280, 32}, "A - move left");
+                GuiLabel({10, 610, 280, 32}, "S - move down");
+                GuiLabel({10, 652, 280, 32}, "D - move right");
                 
                 GuiEnable();
-                GuiLabel({10, 220, 180, 20}, TextFormat("Score: %d", map.get_snake_length() - 3));
+                GuiLabel({10, 368, 280, 32}, TextFormat("Score: %d", map.get_snake_length() - 3));
+                if (GuiDropdownBox({10, 10, 280, 32}, options, &theme, on_drop)) {
+                    on_drop = !on_drop;
+                    apply_theme();
+                } map.draw({300, 0, 700, 700});
             EndDrawing();
 
             if (sigma_dt >= 1.0) {

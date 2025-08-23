@@ -1,5 +1,7 @@
 #include "map.hpp"
 
+#include "raygui.h"
+
 Map::Map(int32_t size, double tr) : size(size), tick_rate(tr) { map.resize(size * size, 0); }
 Map::~Map() { }
 
@@ -177,12 +179,12 @@ void Map::draw(Rectangle rect) {
             }; 
             
             Color color;
-            if (map[x + (y * size)] & WALL) color = DARKGRAY;
-            else if (map[x + (y * size)] & HEAD) color = DARKGREEN;
-            else if (map[x + (y * size)] & BODY) color = GREEN;
-            else if (map[x + (y * size)] & APPLE) color = RED;
-            else if (empty_color == 1) color = {205, 205, 205, 255}; 
-            else color = {225, 225, 225, 255};
+            if (map[x + (y * size)] & WALL) color = GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_PRESSED));
+            else if (map[x + (y * size)] & HEAD) color = GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_FOCUSED));
+            else if (map[x + (y * size)] & BODY) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_FOCUSED));
+            else if (map[x + (y * size)] & APPLE) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_PRESSED));
+            else if (empty_color == 1) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_DISABLED));
+            else color = GetColor(GuiGetStyle(BUTTON, TEXT_COLOR_DISABLED));
 
             DrawRectangleRec(box, color); 
             empty_color *= -1;

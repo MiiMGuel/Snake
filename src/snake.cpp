@@ -61,6 +61,11 @@ public:
                 if (IsKeyPressed(KEY_SPACE)) {
                     playing = true;
                     status = 1;
+                } else if (IsKeyPressed(KEY_R)) {
+                    map.set_snake(map.get_size() / 2, map.get_size() / 2);
+                    map.set_apple(apple_count);
+                    map.set_wall(wall_count);
+                    playing = false;
                 } break;
             
             case 1: // playing
@@ -92,10 +97,21 @@ public:
                 GuiLabel({10, 90, 180, 20}, "Apple Count");
                 if (GuiSpinner({10, 120, 180, 20}, "", &wall_count, 0, 10, false)) map.set_wall(wall_count);
                 GuiLabel({10, 140, 180, 20}, "Wall Count");
-                GuiSpinner({10, 170, 180, 20}, "", &map.tick_rate, 1, 10, false);
+                GuiSpinner({10, 170, 180, 20}, "", &map.tick_rate, 1, 20, false);
                 GuiLabel({10, 190, 180, 20}, "Tick rate");
                 GuiEnable();
                 GuiLabel({10, 220, 180, 20}, TextFormat("Score: %d", map.get_snake_length() - 3));
+                GuiLabel({10, 250, 180, 20}, "Key Bindings:");
+                if (status == 0) GuiLabel({10, 280, 180, 20}, "SPACE - start");
+                else if (status == 1) GuiLabel({10, 280, 180, 20}, "SPACE - pause");
+                else GuiLabel({10, 280, 180, 20}, "SPACE - play again");
+                if (status != 0) GuiDisable();
+                GuiLabel({10, 310, 180, 20}, "R - reset");
+                if (status != 1) GuiDisable(); else GuiEnable();
+                GuiLabel({10, 340, 180, 20}, "W - move up");
+                GuiLabel({10, 370, 180, 20}, "A - move left");
+                GuiLabel({10, 400, 180, 20}, "S - move down");
+                GuiLabel({10, 430, 180, 20}, "D - move right");
             EndDrawing();
 
             if (sigma_dt >= 1.0) {

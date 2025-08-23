@@ -90,17 +90,18 @@ public:
                 ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
                 map.draw({200, 0, 600, 600});
                 
-                if (playing) GuiDisable();
+                if (playing) GuiDisable(); else GuiEnable();
                 GuiCheckBox({10, 10, 20, 20}, "Body Collision", &map.body_collision);
                 GuiCheckBox({10, 40, 20, 20}, "Border Collision", &map.border_collision);
+                
                 if (GuiSpinner({10, 70, 180, 20}, "", &apple_count, 1, 10, false)) map.set_apple(apple_count);
                 GuiLabel({10, 90, 180, 20}, "Apple Count");
                 if (GuiSpinner({10, 120, 180, 20}, "", &wall_count, 0, 10, false)) map.set_wall(wall_count);
                 GuiLabel({10, 140, 180, 20}, "Wall Count");
                 GuiSpinner({10, 170, 180, 20}, "", &map.tick_rate, 1, 20, false);
                 GuiLabel({10, 190, 180, 20}, "Tick rate");
+                
                 GuiEnable();
-                GuiLabel({10, 220, 180, 20}, TextFormat("Score: %d", map.get_snake_length() - 3));
                 GuiLabel({10, 250, 180, 20}, "Key Bindings:");
                 if (status == 0) GuiLabel({10, 280, 180, 20}, "SPACE - start");
                 else if (status == 1) GuiLabel({10, 280, 180, 20}, "SPACE - pause");
@@ -112,6 +113,9 @@ public:
                 GuiLabel({10, 370, 180, 20}, "A - move left");
                 GuiLabel({10, 400, 180, 20}, "S - move down");
                 GuiLabel({10, 430, 180, 20}, "D - move right");
+                
+                GuiEnable();
+                GuiLabel({10, 220, 180, 20}, TextFormat("Score: %d", map.get_snake_length() - 3));
             EndDrawing();
 
             if (sigma_dt >= 1.0) {

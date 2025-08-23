@@ -25,7 +25,7 @@ class Snake : public App {
 private:
     int32_t window_width = 1000;
     int32_t window_height = 700;
-    int32_t theme = 8;
+    int32_t theme = 6;
 
     double current_time = 0.0;
     double previous_time = 0.0;
@@ -51,9 +51,9 @@ private:
         case 3: GuiLoadStyleCandy(); break;
         case 4: GuiLoadStyleCherry(); break;
         case 5: GuiLoadStyleCyber(); break;
-        case 6: GuiLoadStyleDefault(); break;
+        case 6: GuiLoadStyleGenesis(); break;
         case 7: GuiLoadStyleEnefete(); break;
-        case 8: GuiLoadStyleGenesis(); break;
+        case 8: GuiLoadStyleDefault(); break;
         case 9: GuiLoadStyleLavanda(); break;
         case 10: GuiLoadStyleRLTech(); break;
         case 11: GuiLoadStyleSunny(); break;
@@ -91,7 +91,7 @@ public:
         bool on_wall = false;
         bool on_tick = false;
         bool on_drop = false;
-        const char* options = "amber;ashes;bluish;candy;cherry;cyber;light;enefete;dark;lavanda;rltech;sunny;terminal";
+        const char* options = "amber;ashes;bluish;candy;cherry;cyber;dark;enefete;light;lavanda;rltech;sunny;terminal";
         while (!WindowShouldClose()) {
             current_time = GetTime();
             delta_time = current_time - previous_time;

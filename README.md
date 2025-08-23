@@ -2,10 +2,11 @@
 a simple snake game written in C++
 
 # Screenshots
-![genesis](./screenshots/genesis.png)
+![dark](./screenshots/dark.png)
+![amber](./screenshots/amber.png)
 ![candy](./screenshots/candy.png)
-![lavanda](./screenshots/lavanda.png)
 ![cyber](./screenshots/cyber.png)
+![lavanda](./screenshots/lavanda.png)
 
 # Dependencies
 - [raylib](https://github.com/raysan5/raylib)

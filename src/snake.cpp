@@ -72,12 +72,12 @@ private:
     }
 public:
     Snake() {
-        SetConfigFlags(FLAG_VSYNC_HINT);
+        // SetConfigFlags(FLAG_VSYNC_HINT);
         InitWindow(
             window_width, 
             window_height, 
             "8-bit snake"
-        ); 
+        ); SetTargetFPS(24);
 
         apply_theme();
         

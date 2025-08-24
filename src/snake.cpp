@@ -38,6 +38,8 @@ private:
 
     Map map = Map(15, 4.0);
     int32_t size = 15;
+    int32_t max_count = 5;
+    int32_t mc_multiplier = 3;
     int32_t apple_count = 1;
     int32_t apple_pcount = 1;
     int32_t wall_count = 0;
@@ -106,12 +108,14 @@ public:
             case 0: // paused
                 if (IsKeyPressed(KEY_M)) { 
                     size += 5;
-                    if (size > 50) size = 50;
+                    mc_multiplier++;
+                    if (size > 50) { size = 50; mc_multiplier = 10; }
                     map.resize(size);
                     map_reset();
                 } else if (IsKeyPressed(KEY_N)) {
                     size -= 5;
-                    if (size < 5) size = 5; 
+                    mc_multiplier--;
+                    if (size < 5) { size = 5; mc_multiplier = 1; }
                     map.resize(size); 
                     map_reset();
                 }
@@ -147,12 +151,21 @@ public:
                 GuiCheckBox({10, 52, 32, 32}, "Body Collision", &map.body_collision);
                 GuiCheckBox({10, 94, 32, 32}, "Border Collision", &map.border_collision);
                 
-                if (GuiSpinner({10, 146, 280, 32}, "", &apple_count, 1, 10, on_apple)) on_apple = !on_apple;
+                if (GuiSpinner({10, 146, 280, 32}, "", &apple_count, 1, max_count * mc_multiplier, on_apple)) on_apple = !on_apple;
                 GuiLabel({10, 178, 280, 32}, "Apple Count");
-                if (GuiSpinner({10, 220, 280, 32}, "", &wall_count, 0, 10, on_wall)) on_wall = !on_wall;
+                if (GuiSpinner({10, 220, 280, 32}, "", &wall_count, 0, max_count * mc_multiplier, on_wall)) on_wall = !on_wall;
                 GuiLabel({10, 252, 280, 32}, "Wall Count");
                 if (GuiSpinner({10, 294, 280, 32}, "", &map.tick_rate, 1, 20, on_tick)) { on_tick = !on_tick; }
                 GuiLabel({10, 326, 280, 32}, "Tick rate");
+
+                if (apple_count > max_count * mc_multiplier) apple_count = max_count * mc_multiplier;
+                else if (apple_count < 1) apple_count = 1;
+
+                if (wall_count > max_count * mc_multiplier) wall_count = max_count * mc_multiplier;
+                else if (wall_count < 0) wall_count = 0;
+
+                if (map.tick_rate > 20) map.tick_rate = 20;
+                else if (map.tick_rate < 1) map.tick_rate = 1;
 
                 if (apple_pcount != apple_count) {
                     apple_pcount = apple_count;

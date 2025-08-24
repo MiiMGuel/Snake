@@ -27,12 +27,6 @@ private:
     int32_t window_height = 700;
     int32_t theme = 6;
 
-    double current_time = 0.0;
-    double previous_time = 0.0;
-    double delta_time = 0.0;
-    double sigma_dt = 0.0;
-    uint32_t frame_count = 0;
-    uint32_t frame_rate = 0;
     uint8_t status = 0;
     bool playing = false;
 
@@ -98,10 +92,6 @@ public:
         bool on_drop = false;
         const char* options = "amber;ashes;bluish;candy;cherry;cyber;dark;enefete;lavanda;light;rltech;sunny;terminal";
         while (!WindowShouldClose()) {
-            current_time = GetTime();
-            delta_time = current_time - previous_time;
-            sigma_dt += delta_time;
-
             switch (status) {
             case 0: // paused
                 if (IsKeyPressed(KEY_M)) { 
@@ -127,7 +117,7 @@ public:
             case 1: // playing
                 if (IsKeyPressed(KEY_SPACE)) status = 0;
 
-                map.update(delta_time);
+                map.update();
                 if (map.snake_alive == false) {
                     status = 2;
                 } break;
@@ -192,15 +182,6 @@ public:
                     apply_theme();
                 } map.draw({300, 0, 700, 700});
             EndDrawing();
-
-            if (sigma_dt >= 1.0) {
-                sigma_dt = 0.0;
-                frame_rate = frame_count;
-                frame_count = 0;
-            }
-
-            frame_count++;
-            previous_time = current_time;
         }
     }
 };

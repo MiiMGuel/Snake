@@ -98,7 +98,7 @@ void Map::set_wall(int32_t n) {
     }
 }
 
-void Map::update(double dt) {
+void Map::update() {
     static double time = 0.0;
 
     if (snake_alive && next_input) {
@@ -113,7 +113,7 @@ void Map::update(double dt) {
         if (IsKeyPressed(KEY_RIGHT) && snake_dir != 0) { snake_dir = 2; next_input = false;}
     }
 
-    time += dt;
+    time += (double)GetFrameTime();
     if (snake_alive) if (time >= 1.0 / (double)tick_rate) {
         time = 0.0;
         next_input = true;
@@ -174,25 +174,49 @@ void Map::update(double dt) {
 
 void Map::draw(Rectangle rect) {
     int8_t empty_color = 1;
-    for (int32_t y = 0; y < size; y++) { 
-        for (int32_t x = 0; x < size; x++) {
-            Rectangle box = {
-                rect.x + (x * (rect.width / size)),
-                rect.y + (y * (rect.height / size)), 
-                (rect.width / size), 
-                (rect.height / size)
-            }; 
-            
-            Color color;
-            if (map[x + (y * size)] & WALL) color = GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_PRESSED));
-            else if (map[x + (y * size)] & HEAD) color = GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_FOCUSED));
-            else if (map[x + (y * size)] & BODY) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_FOCUSED));
-            else if (map[x + (y * size)] & APPLE) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_PRESSED));
-            else if (empty_color == 1) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_DISABLED));
-            else color = GetColor(GuiGetStyle(BUTTON, TEXT_COLOR_DISABLED));
+    for (size_t i = 0; i < size * size; i++) {
+        int32_t x = i % size;
+        int32_t y = i / size;
 
-            DrawRectangleRec(box, color); 
-            empty_color *= -1;
-        } if ((size % 2) == 0) empty_color *= -1;
+        Rectangle box = {
+            rect.x + (x * (rect.width / size)),
+            rect.y + (y * (rect.height / size)), 
+            (rect.width / size), 
+            (rect.height / size)
+        }; 
+        
+        Color color;
+        if (map[x + (y * size)] & WALL) color = GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_PRESSED));
+        else if (map[x + (y * size)] & HEAD) color = GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_FOCUSED));
+        else if (map[x + (y * size)] & BODY) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_FOCUSED));
+        else if (map[x + (y * size)] & APPLE) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_PRESSED));
+        else if (empty_color == 1) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_DISABLED));
+        else color = GetColor(GuiGetStyle(BUTTON, TEXT_COLOR_DISABLED));
+
+        DrawRectangleRec(box, color); 
+        empty_color *= -1;
+        if ((size % 2) == 0) empty_color *= -1;
     }
+
+    // for (int32_t y = 0; y < size; y++) { 
+    //     for (int32_t x = 0; x < size; x++) {
+    //         Rectangle box = {
+    //             rect.x + (x * (rect.width / size)),
+    //             rect.y + (y * (rect.height / size)), 
+    //             (rect.width / size), 
+    //             (rect.height / size)
+    //         }; 
+            
+    //         Color color;
+    //         if (map[x + (y * size)] & WALL) color = GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_PRESSED));
+    //         else if (map[x + (y * size)] & HEAD) color = GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_FOCUSED));
+    //         else if (map[x + (y * size)] & BODY) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_FOCUSED));
+    //         else if (map[x + (y * size)] & APPLE) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_PRESSED));
+    //         else if (empty_color == 1) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_DISABLED));
+    //         else color = GetColor(GuiGetStyle(BUTTON, TEXT_COLOR_DISABLED));
+
+    //         DrawRectangleRec(box, color); 
+    //         empty_color *= -1;
+    //     } if ((size % 2) == 0) empty_color *= -1;
+    // }
 }

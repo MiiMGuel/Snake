@@ -49,7 +49,7 @@ public:
     void set_snake(int32_t x, int32_t y);
     void set_apple(int32_t n);
     void set_wall(int32_t n);
-    void update(double dt);
+    void update();
     void draw(Rectangle rect);
 };
 

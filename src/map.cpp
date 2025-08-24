@@ -178,6 +178,8 @@ void Map::draw(Rectangle rect) {
         int32_t x = i % size;
         int32_t y = i / size;
 
+        if (x == 0 && (size % 2) == 0) empty_color *= -1;
+
         Rectangle box = {
             rect.x + (x * (rect.width / size)),
             rect.y + (y * (rect.height / size)), 
@@ -195,28 +197,5 @@ void Map::draw(Rectangle rect) {
 
         DrawRectangleRec(box, color); 
         empty_color *= -1;
-        if ((size % 2) == 0) empty_color *= -1;
     }
-
-    // for (int32_t y = 0; y < size; y++) { 
-    //     for (int32_t x = 0; x < size; x++) {
-    //         Rectangle box = {
-    //             rect.x + (x * (rect.width / size)),
-    //             rect.y + (y * (rect.height / size)), 
-    //             (rect.width / size), 
-    //             (rect.height / size)
-    //         }; 
-            
-    //         Color color;
-    //         if (map[x + (y * size)] & WALL) color = GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_PRESSED));
-    //         else if (map[x + (y * size)] & HEAD) color = GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_FOCUSED));
-    //         else if (map[x + (y * size)] & BODY) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_FOCUSED));
-    //         else if (map[x + (y * size)] & APPLE) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_PRESSED));
-    //         else if (empty_color == 1) color = GetColor(GuiGetStyle(BUTTON, BASE_COLOR_DISABLED));
-    //         else color = GetColor(GuiGetStyle(BUTTON, TEXT_COLOR_DISABLED));
-
-    //         DrawRectangleRec(box, color); 
-    //         empty_color *= -1;
-    //     } if ((size % 2) == 0) empty_color *= -1;
-    // }
 }

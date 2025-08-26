@@ -141,7 +141,7 @@ public:
                 GuiLabel({10, 178, 280, 32}, "Apple Count");
                 if (GuiSpinner({10, 220, 280, 32}, "", &wall_count, 0, size, on_wall)) on_wall = !on_wall;
                 GuiLabel({10, 252, 280, 32}, "Wall Count");
-                if (GuiSpinner({10, 294, 280, 32}, "", &map.tick_rate, 1, 20, on_tick)) { on_tick = !on_tick; }
+                if (GuiSpinner({10, 294, 280, 32}, "", &map.tick_rate, 1, 999, on_tick)) { on_tick = !on_tick; }
                 GuiLabel({10, 326, 280, 32}, "Tick rate");
 
                 if (apple_count > size) apple_count = size;
@@ -150,7 +150,7 @@ public:
                 if (wall_count > size) wall_count = size;
                 else if (wall_count < 0) wall_count = 0;
 
-                if (map.tick_rate > 20) map.tick_rate = 20;
+                if (map.tick_rate > 999) map.tick_rate = 999;
                 else if (map.tick_rate < 1) map.tick_rate = 1;
 
                 if (apple_pcount != apple_count) {

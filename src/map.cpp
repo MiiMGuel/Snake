@@ -103,14 +103,13 @@ void Map::update() {
 
     if (snake_alive && next_input) {
         if (IsKeyPressed(KEY_W) && snake_dir != 3) { snake_dir = 1; next_input = false;}
-        if (IsKeyPressed(KEY_A) && snake_dir != 2) { snake_dir = 0; next_input = false;}
-        if (IsKeyPressed(KEY_S) && snake_dir != 1) { snake_dir = 3; next_input = false;}
-        if (IsKeyPressed(KEY_D) && snake_dir != 0) { snake_dir = 2; next_input = false;}
-
-        if (IsKeyPressed(KEY_UP) && snake_dir != 3) { snake_dir = 1; next_input = false;}
-        if (IsKeyPressed(KEY_LEFT) && snake_dir != 2) { snake_dir = 0; next_input = false;}
-        if (IsKeyPressed(KEY_DOWN) && snake_dir != 1) { snake_dir = 3; next_input = false;}
-        if (IsKeyPressed(KEY_RIGHT) && snake_dir != 0) { snake_dir = 2; next_input = false;}
+        else if (IsKeyPressed(KEY_A) && snake_dir != 2) { snake_dir = 0; next_input = false;}
+        else if (IsKeyPressed(KEY_S) && snake_dir != 1) { snake_dir = 3; next_input = false;}
+        else if (IsKeyPressed(KEY_D) && snake_dir != 0) { snake_dir = 2; next_input = false;}
+        else if (IsKeyPressed(KEY_UP) && snake_dir != 3) { snake_dir = 1; next_input = false;}
+        else if (IsKeyPressed(KEY_LEFT) && snake_dir != 2) { snake_dir = 0; next_input = false;}
+        else if (IsKeyPressed(KEY_DOWN) && snake_dir != 1) { snake_dir = 3; next_input = false;}
+        else if (IsKeyPressed(KEY_RIGHT) && snake_dir != 0) { snake_dir = 2; next_input = false;}
     }
 
     time += (double)GetFrameTime();
